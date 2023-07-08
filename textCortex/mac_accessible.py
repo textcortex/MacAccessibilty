@@ -101,17 +101,19 @@ class MacAccessbility:
         self.process_id = self.frontmost_app.processIdentifier()
         ref = get_app_ref(self.process_id)
         element = get_attribute_value(ref,'AXFocusedUIElement')
-        self.focused_elemnt = element
-        role = get_attribute_value(element,'AXRole')
 
-        call_back_argv = {'role':role,'name':self.frontmost_app.localizedName(),'bundle_id':self.frontmost_app.bundleIdentifier()}
-
-        if self.frontmost_app.isFinishedLaunching():
-            self.callback('app_changed',call_back_argv)
-            if role in editable:
-                setNotification(ref,self.process_id,'AXSelectedTextChanged',self.selected_text_change())
-            setNotification(ref,self.process_id,'AXFocusedUIElementChanged',self.ui_focused_change()) 
-
+        if element:
+            self.focused_elemnt = element
+            role = get_attribute_value(element,'AXRole')
+            call_back_argv = {'role':role,'name':self.frontmost_app.localizedName(),'bundle_id':self.frontmost_app.bundleIdentifier()}
+            if self.frontmost_app.isFinishedLaunching():
+                self.callback('app_changed',call_back_argv)
+                if role in editable:
+                    setNotification(ref,self.process_id,'AXSelectedTextChanged',self.selected_text_change())
+                setNotification(ref,self.process_id,'AXFocusedUIElementChanged',self.ui_focused_change()) 
+        else:
+            if self.frontmost_app.isFinishedLaunching():
+                setNotification(ref,self.process_id,'AXFocusedUIElementChanged',self.ui_focused_change()) 
 
     def start(self):
         set_app_changed_notification(self.app_changed_event)
@@ -119,3 +121,10 @@ class MacAccessbility:
     def stop(self):
         stop_event_loop()
     
+def f(k,l):
+    print(k)
+    print(l)
+
+c = MacAccessbility(f)
+
+c.start()
