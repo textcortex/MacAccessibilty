@@ -47,7 +47,7 @@ class MacAccessbility:
             role = get_attribute_value(element,'AXRole')
             self.focused_elemnt = element
             dict = {}
-            print(role)
+            
             if selected_text:
                if role in ['AXTextField','AXTextArea']:
                    dict = self.native_text_field_selected_text()

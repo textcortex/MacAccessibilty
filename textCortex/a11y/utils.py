@@ -72,7 +72,7 @@ def setError(error_code, error_message):
         kAXErrorNotImplemented: ErrorNotImplemented, # -25208
     }
     msg = '{} (AX Error {})'.format(error_message, error_code)
-    print(msg)
+  
     raise error_mapping[error_code](msg)
 
 def get_attributes(ref):
@@ -98,7 +98,6 @@ def get_attribute_value(ref, attr):
 
 def get_parametrized_attribute_value(ref,attr,parameter):
     err, attrValue = AXUIElementCopyParameterizedAttributeValue(ref, attr, parameter,None)
-    print(attrValue)
     if err == kAXErrorNoValue:
         return
 
