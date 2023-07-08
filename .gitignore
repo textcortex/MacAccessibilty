@@ -1,0 +1,4 @@
+/build
+/dist
+/textCortex.egg-info
+/**/__pycache__
