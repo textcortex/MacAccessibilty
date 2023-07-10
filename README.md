@@ -12,3 +12,17 @@ cd dist
 pip install *.whl
 ```
 
+## Example
+
+```py
+from textCortex.mac_accessible import MacAccessbility
+
+def call_back(notification,data):
+    print(notification)
+    print(data)
+
+
+macAccessbility=MacAccessbility(call_back)
+macAccessbility.start()
+
+```
