@@ -15,7 +15,8 @@ from ApplicationServices import AXValueCreate, kAXValueCFRangeType
 
 editable = ['AXTextArea', 'AXTextField', 'AXWebArea']
 
-# TODO : Imprve event names
+# TODO : Improve event names
+
 '''
     selected_text = triggred when text selected
     app_changed = triggred when active app changed

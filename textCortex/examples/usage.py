@@ -8,4 +8,3 @@ def call_back(notificatio, data):
 mac = MacAccessbility(call_back)
 
 mac.start()
-c
