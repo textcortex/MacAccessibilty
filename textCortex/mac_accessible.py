@@ -213,7 +213,7 @@ class MacAccessbility:
 
                 x = possition.x
                 y = possition.y
-                self.set_text_relative_to_inseration_point("dadad", "below")
+
                 width = size.width
                 height = size.height
                 dict = {'selected_text': selected_text, 'is_editable': True, 'position': {
