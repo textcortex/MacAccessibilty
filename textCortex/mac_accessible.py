@@ -1,13 +1,13 @@
 from ApplicationServices import *
-from a11y.utils import (get_frontmost,
-                        get_app_ref,
-                        set_app_changed_notification,
-                        setNotification,
-                        get_attribute_value,
-                        get_parametrized_attribute_value,
-                        is_attribute_settable, stop_event_loop,
-                        set_attribute_value
-                        )
+from textCortex.a11y.utils import (get_frontmost,
+                                   get_app_ref,
+                                   set_app_changed_notification,
+                                   setNotification,
+                                   get_attribute_value,
+                                   get_parametrized_attribute_value,
+                                   is_attribute_settable, stop_event_loop,
+                                   set_attribute_value
+                                   )
 from ApplicationServices import AXObserverCreate, kAXLayoutChangedNotification
 import objc
 from CoreFoundation import CFRange
