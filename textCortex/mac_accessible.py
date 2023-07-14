@@ -74,20 +74,25 @@ class MacAccessbility:
         return selected_text_change_observer_callback
 
     def set_text_relative_to_inseration_point(self, value, direction):
-        location, _ = get_attribute_value(
+        location, length = get_attribute_value(
             self.focused_elemnt, 'AXSelectedTextRange')
         if direction == 'above':
-            # AXReplaceRangeWithText
-            my_nsrange = CFRange(0, location)
+            if length == 0:
+                my_nsrange = CFRange(0, location)
+            else:
+                my_nsrange = CFRange(location, length)
             my_axvalue = AXValueCreate(kAXValueCFRangeType, my_nsrange)
             set_attribute_value(self.focused_elemnt,
                                 'AXSelectedTextRange', my_axvalue)
             self.set_selected_text(value)
         elif direction == 'below':
-            my_nsrange = CFRange(location, location+1)
+            my_nsrange = CFRange(location, 1)
+
             my_axvalue = AXValueCreate(kAXValueCFRangeType, my_nsrange)
+
             set_attribute_value(self.focused_elemnt,
                                 'AXSelectedTextRange', my_axvalue)
+
             self.set_selected_text(value)
         else:
             return 'please use above or below'
@@ -110,11 +115,13 @@ class MacAccessbility:
             role = get_attribute_value(element, 'AXRole')
             self.focused_elemnt = element
             callback_argv = {'role': role}
+            self.callback('focus_ui_change', callback_argv)
+
             if role in editable:
-                self.callback('focus_ui_change', callback_argv)
                 ref = get_app_ref(self.process_id)
                 setNotification(
                     ref, self.process_id, 'AXSelectedTextChanged', self.selected_text_change())
+
         return focused_ui_chaned_observer_callback
 
     def ui_resized(self):
@@ -130,6 +137,21 @@ class MacAccessbility:
                         dict = self.native_text_field_selected_text()
                     else:
                         dict = {'response': 'not implemted yet '}
+                else:
+                    location, _ = get_attribute_value(
+                        self.focused_elemnt, 'AXSelectedTextRange')
+                    my_nsrange = CFRange(location, 1)
+                    my_axvalue = AXValueCreate(kAXValueCFRangeType, my_nsrange)
+                    possition, size = get_parametrized_attribute_value(
+                        self.focused_elemnt, 'AXBoundsForRange', my_axvalue)
+
+                    x = possition.x
+                    y = possition.y
+
+                    width = size.width
+                    height = size.height
+                    dict = {'selected_text': selected_text, 'is_editable': True, 'position': {
+                        'x': x, 'y': y}, 'size': {'width': width, 'height': height}}
 
                 self.callback('ui_reized', dict)
         return focused_ui_resized
@@ -173,15 +195,16 @@ class MacAccessbility:
 
     def key_pressed(self, event):
         # listen for 'Alt+Enter' Key
-        if event.modifierFlags() & NSAlternateKeyMask and str(event.keyCode()) == "36":
+        if event.modifierFlags() & NSCommandKeyMask and str(event.keyCode()) == "50":
             role = get_attribute_value(self.focused_elemnt, 'AXRole')
             if role in editable:
-                location, _ = get_attribute_value(
+                location, length = get_attribute_value(
                     self.focused_elemnt, 'AXSelectedTextRange')
-                selected_text = self.get_text_above_inseration_point()
-                if self.selected_text:
-                    selected_text = self.selected_text
-                    self.set_selected_text(self.selected_text)
+                if length > 0:
+                    selected_text = get_attribute_value(
+                        self.focused_elemnt, 'AXSelectedText')
+                else:
+                    selected_text = self.get_text_above_inseration_point()
 
                 my_nsrange = CFRange(location, 1)
                 my_axvalue = AXValueCreate(kAXValueCFRangeType, my_nsrange)
@@ -190,7 +213,7 @@ class MacAccessbility:
 
                 x = possition.x
                 y = possition.y
-
+                self.set_text_relative_to_inseration_point("dadad", "below")
                 width = size.width
                 height = size.height
                 dict = {'selected_text': selected_text, 'is_editable': True, 'position': {
