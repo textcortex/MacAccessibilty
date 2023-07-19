@@ -160,7 +160,7 @@ def get_app_ref(pid):
 
 
 def start_event_loop():
-    AppHelper.runEventLoop()
+    NSApplication.sharedApplication().run()
 
 
 class MyRefcon(ctypes.Structure):
@@ -207,8 +207,6 @@ def set_app_changed_notification(call_back, key_down_callback):
 
     NSEvent.addGlobalMonitorForEventsMatchingMask_handler_(
         event_mask, key_down_callback)
-
-    NSApplication.sharedApplication().run()
 
 
 def stop_event_loop():

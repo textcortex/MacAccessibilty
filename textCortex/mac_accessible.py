@@ -86,7 +86,7 @@ class MacAccessbility:
                                 'AXSelectedTextRange', my_axvalue)
             self.set_selected_text(value)
         elif direction == 'below':
-            my_nsrange = CFRange(location, 1)
+            my_nsrange = CFRange(location+length, 1)
 
             my_axvalue = AXValueCreate(kAXValueCFRangeType, my_nsrange)
 
